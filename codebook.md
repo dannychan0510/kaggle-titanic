@@ -1,22 +1,19 @@
-# VARIABLE DESCRIPTIONS:
-survival | Survival
-         | (0 = No; 1 = Yes)
-pclass          Passenger Class
-                (1 = 1st; 2 = 2nd; 3 = 3rd)
-name            Name
-sex             Sex
-age             Age
-sibsp           Number of Siblings/Spouses Aboard
-parch           Number of Parents/Children Aboard
-ticket          Ticket Number
-fare            Passenger Fare
-cabin           Cabin
-embarked        Port of Embarkation
-                (C = Cherbourg; Q = Queenstown; S = Southampton)
+# VARIABLE DESCRIPTIONS: 
+survival | Survival (0 = No; 1 = Yes)  
+pclass   | Passenger Class (1 = 1st; 2 = 2nd; 3 = 3rd)  
+name     | Name  
+sex      | Sex  
+age      | Age  
+sibsp    | Number of Siblings/Spouses Aboard  
+parch    | Number of Parents/Children Aboard  
+ticket   | Ticket Number  
+fare     | Passenger Fare  
+cabin    | Cabin  
+embarked | Port of Embarkation (C = Cherbourg; Q = Queenstown; S = Southampton)  
 
 SPECIAL NOTES:
 Pclass is a proxy for socio-economic status (SES)
- 1st ~ Upper; 2nd ~ Middle; 3rd ~ Lower
+1st ~ Upper; 2nd ~ Middle; 3rd ~ Lower
 
 Age is in Years; Fractional if Age less than One (1)
  If the Age is Estimated, it is in the form xx.5
