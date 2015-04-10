@@ -28,4 +28,4 @@ test$Survived <- rep(0, 418)
 
 # Create first submission file assuming all passengers perish
 submit <- data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
-write.csv(submit, file = "theyallperish.csv", row.names = FALSE)
+write.csv(submit, file = "Submissions/theyallperish.csv", row.names = FALSE)
