@@ -10,11 +10,12 @@ setwd("~/Documents/GitHub/kaggle-titanic")
 # Import data
 genderclassmodel <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/genderclassmodel.csv", stringsAsFactors = FALSE)
 gendermodel <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/gendermodel.csv", stringsAsFactors = FALSE)
-test <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/test.csv", stringsAsFactors = FALSE)
-train <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/train.csv", stringsAsFactors = FALSE)
+test <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/test.csv")
+train <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/train.csv")
 
 
-# Exploratory data analysis -----------------------------------------------
+
+# All passengers perish ---------------------------------------------------
 
 # Understanding the structure of the data
 str(train)
@@ -26,6 +27,18 @@ prop.table(table(train$Survived))
 # Create a 'Survived' column in the test dataset where everyone does not survive
 test$Survived <- rep(0, 418)
 
-# Create first submission file assuming all passengers perish
+# Create first submission file assuming all passengers perish (0.6269)
 submit <- data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
 write.csv(submit, file = "Submissions/theyallperish.csv", row.names = FALSE)
+
+
+
+# Gender-class model ------------------------------------------------------
+
+# Looking at the split between genders
+summary(train$Sex)
+
+# Looking at the proportion of males and females that survived
+prop.table(table(train$Sex, train$Survived), 1)
+
+
