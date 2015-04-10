@@ -18,3 +18,14 @@ train <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/train.csv", stringsAsF
 
 # Understanding the structure of the data
 str(train)
+
+# Looking at the data to see how many people in the training dataset has survived
+table(train$Survived)
+prop.table(table(train$Survived))
+
+# Create a 'Survived' column in the test dataset where everyone does not survive
+test$Survived <- rep(0, 418)
+
+# Create first submission file assuming all passengers perish
+submit <- data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
+write.csv(submit, file = "theyallperish.csv", row.names = FALSE)
