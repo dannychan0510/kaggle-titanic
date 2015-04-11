@@ -81,3 +81,25 @@ submit <- data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
 write.csv(submit, file = "Submissions/submission3.csv", row.names = FALSE)
 
 
+# Decision trees ----------------------------------------------------------
+
+# Installing relevant packages
+install.packages("rpart")
+install.packages('rattle')
+install.packages('rpart.plot')
+install.packages('RColorBrewer')
+library(rpart)
+library(rattle)
+library(rpart.plot)
+library(RColorBrewer)
+
+# Using rpart for the first time!
+fit <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked, data=train, method="class")
+
+# Plotting the decision tree
+fancyRpartPlot(fit)
+
+# Generationg submission for Kaggle using this decision tree
+Prediction <- predict(fit, test, type = "class")
+submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
+write.csv(submit, file = "submission4.csv", row.names = FALSE)
