@@ -105,6 +105,10 @@ Prediction <- predict(fit, test, type = "class")
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
 write.csv(submit, file = "submission4.csv", row.names = FALSE)
 
+<<<<<<< HEAD
 
 
 # This is a different comment (B)
+=======
+# This is a new thing (A)
+>>>>>>> origin/master
