@@ -33,6 +33,7 @@ test$Survived <- rep(0, 418)
 submit <- data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
 write.csv(submit, file = "Submissions/submission1.csv", row.names = FALSE)
 
+# New comment
 
 
 # Gender-class model ------------------------------------------------------
