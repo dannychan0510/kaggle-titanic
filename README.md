@@ -1,6 +1,6 @@
 # README.md
 ## Introduction
-Hello! I am a working economist and am looking to teach myself data science and machine learning. I plan to delve into these concepts by experimenting with Kaggle's "Titanic: Machine Learning from Disaster" project (http://www.kaggle.com/c/titanic-gettingStarted).
+Hello! I am a working economist and am looking to teach myself data science and machine learning. I plan to delve into these concepts and learn them by experimenting with Kaggle's "Titanic: Machine Learning from Disaster" project (http://www.kaggle.com/c/titanic-gettingStarted).
 
 I will be following several tutorials as I explore these datasets. The tutorials I plan to follow are:
 - http://trevorstephens.com/post/72916401642/titanic-getting-started-with-r
