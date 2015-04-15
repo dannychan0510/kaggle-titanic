@@ -9,4 +9,4 @@ I will be following several tutorials as I explore these datasets. The tutorials
 
 ## Key items in this repo
 - The **Data** folder contains the data from the Kaggle competition.
-- analysis1.R is the R script for my analysis of the training dataset.
+- **analysis1.R** is the R script for my analysis of the training dataset.
