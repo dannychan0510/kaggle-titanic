@@ -99,7 +99,7 @@ fit <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked, da
 # Plotting the decision tree
 fancyRpartPlot(fit)
 
-# Generationg submission for Kaggle using this decision tree
+# Generationg submission for Kaggle using this decision tree (score = 0.78469)
 Prediction <- predict(fit, test, type = "class")
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
 write.csv(submit, file = "submission4.csv", row.names = FALSE)
