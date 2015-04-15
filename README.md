@@ -1,4 +1,4 @@
-# README.md
+# Kaggle's "Titanic: Machine Learning from Disaster" Project
 ## Introduction
 Hello! I am a working economist and am looking to teach myself data science and machine learning. I plan to delve into these concepts and learn them by experimenting with Kaggle's "Titanic: Machine Learning from Disaster" project (http://www.kaggle.com/c/titanic-gettingStarted).
 
