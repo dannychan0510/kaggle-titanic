@@ -7,5 +7,6 @@ I will be following several tutorials as I explore these datasets. The tutorials
 - https://statsguys.wordpress.com/2014/01/03/first-post/
 - https://statsguys.wordpress.com/2014/01/03/first-post/
 
-## Items in this repo
+## Key items in this repo
 - The **Data** folder contains the data from the Kaggle competition.
+- analysis1.R is the R script for my analysis of the training dataset.
