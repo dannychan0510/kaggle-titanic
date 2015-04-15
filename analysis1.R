@@ -104,3 +104,7 @@ fancyRpartPlot(fit)
 Prediction <- predict(fit, test, type = "class")
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
 write.csv(submit, file = "submission4.csv", row.names = FALSE)
+
+
+
+# This is a different comment (B)
