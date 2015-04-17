@@ -33,8 +33,6 @@ test$Survived <- rep(0, 418)
 submit <- data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
 write.csv(submit, file = "Submissions/submission1.csv", row.names = FALSE)
 
-# New comment
-
 
 # Gender-class model ------------------------------------------------------
 
@@ -104,11 +102,3 @@ fancyRpartPlot(fit)
 Prediction <- predict(fit, test, type = "class")
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
 write.csv(submit, file = "submission4.csv", row.names = FALSE)
-
-<<<<<<< HEAD
-
-
-# This is a different comment (B)
-=======
-# This is a new thing (A)
->>>>>>> origin/master
