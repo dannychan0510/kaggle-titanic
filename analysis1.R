@@ -5,16 +5,16 @@
 # Project set-up ----------------------------------------------------------
 
 # Setting working directory
-setwd("~/Documents/GitHub/kaggle-titanic")
+setwd("C:\\Users\\895284\\Documents\\GitHub\\kaggle-titanic")
 
 # Loading libraries
 library(ggplot2)
 
 # Import data
-genderclassmodel <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/genderclassmodel.csv", stringsAsFactors = FALSE)
-gendermodel <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/gendermodel.csv", stringsAsFactors = FALSE)
-test <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/test.csv")
-train <- read.csv("~/Documents/GitHub/kaggle-titanic/Data/train.csv")
+genderclassmodel <- read.csv("Data\\genderclassmodel.csv", stringsAsFactors = FALSE)
+gendermodel <- read.csv("Data\\gendermodel.csv", stringsAsFactors = FALSE)
+test <- read.csv("Data\\test.csv")
+train <- read.csv("Data\\train.csv")
 
 
 # All passengers perish ---------------------------------------------------
@@ -98,7 +98,61 @@ fit <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked, da
 # Plotting the decision tree
 fancyRpartPlot(fit)
 
-# Generationg submission for Kaggle using this decision tree (score = 0.78469)
+# Generating submission for Kaggle using this decision tree (score = 0.78469)
 Prediction <- predict(fit, test, type = "class")
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
 write.csv(submit, file = "submission4.csv", row.names = FALSE)
+
+
+
+# Feature Engineering -----------------------------------------------------
+
+# Creating a combined dataset with both training and test data
+test$Survived <- NA
+combi <- rbind(train, test)
+
+# Changing name back to character
+combi$Name <- as.character(combi$Name)
+
+# Creating a Title variable from the Name variable
+combi$Title <- sapply(combi$Name, FUN = function(x) {strsplit(x, split = '[,.]')[[1]][2]})
+combi$TItle <- sub(' ', '', combi$Title)
+
+# Combining a few of the unusual titles
+combi$Title[(combi$Title %in% c('Mme', 'Mlle'))] <- 'Mlle'
+combi$Title[(combi$Title %in% c('Capt', 'Don', 'Major', 'Sir'))] <- 'Sir'
+combi$Title[(combi$Title %in% c('Dona', 'Lady', 'the Countess', 'Jonkheer'))] <- 'Lady'
+
+# Changing the Title variable back into a factor variable
+combi$Title <- factor(combi$Title)
+
+# Creating a variable which captures the size of the family
+combi$FamilySize <- combi$SibSp + combi$Parch + 1
+
+# Creating a Surname variable
+combi$Surname <- sapply(combi$Name, FUN = function(x) {strsplit(x, split = '[,.]')[[1]][1]})
+
+# Combining the FamilySize and Surname varaiables
+combi$FamilyID <- paste(as.character(combi$FamilySize), combi$Surname, sep = "")
+
+# Identifying families with small sizes
+combi$FamilyID[combi$FamilySize <= 2] <- 'Small'
+
+# Data cleaning - some small families slipped through the net
+famIDs <- data.frame(table(combi$FamilyID))
+famIDs <- famIDs[famIDs$Freq <= 2, ]
+combi$FamilyID[combi$FamilyID %in% famIDs$Var1] <- 'Small'
+combi$FamilyID <- factor(combi$FamilyID)
+
+# Resplitting the training and test datasets
+train <- combi[1:891, ]
+test <- combi[892:1309, ]
+
+# Fitting a new prediction tree using feature engineered variables
+fit <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked + Title + FamilySize + FamilyID, 
+             data=train, method="class")
+
+# Generating a prediction and submission file for Kaggle
+Prediction <- predict(fit, test, type = "class")
+submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
+write.csv(submit, file = "submission5.csv", row.names = FALSE)
