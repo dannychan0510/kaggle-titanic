@@ -16,6 +16,11 @@ gendermodel <- read.csv("Data\\gendermodel.csv", stringsAsFactors = FALSE)
 test <- read.csv("Data\\test.csv")
 train <- read.csv("Data\\train.csv")
 
+genderclassmodel <- read.csv("Data/genderclassmodel.csv", stringsAsFactors = FALSE)
+gendermodel <- read.csv("Data/gendermodel.csv", stringsAsFactors = FALSE)
+test <- read.csv("Data/test.csv")
+train <- read.csv("Data/train.csv")
+
 
 # All passengers perish ---------------------------------------------------
 
@@ -156,3 +161,44 @@ fit <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked + T
 Prediction <- predict(fit, test, type = "class")
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
 write.csv(submit, file = "submission5.csv", row.names = FALSE)
+
+
+
+# Random Forest -----------------------------------------------------------
+
+# Growing a tree for Age
+Agefit <- rpart(Age ~ Pclass + Sex + SibSp + Parch + Fare + Embarked + Title + FamilySize,
+                data=combi[!is.na(combi$Age),], method="anova")
+combi$Age[is.na(combi$Age)] <- predict(Agefit, combi[is.na(combi$Age),])
+
+# Fixing the Embared and Fare varibles with missing values
+combi$Embarked[which(combi$Embarked == '')] = "S"
+combi$Fare[which(is.na(combi$Fare))] <- median(combi$Fare, na.rm=TRUE)
+
+# Generating a new FamilyID variable because the random forest function in R cannot take in too many factors
+combi$FamilyID2 <- combi$FamilyID
+combi$FamilyID2 <- as.character(combi$FamilyID2)
+combi$FamilyID2[combi$FamilySize <= 3] <- 'Small'
+combi$FamilyID2 <- factor(combi$FamilyID2)
+
+# Re-splitting new training and test data
+train <- combi[1:891, ]
+test <- combi[892:1309, ]
+
+# Loading the randomForest package
+install.packages('randomForest')
+library(randomForest)
+
+# Resetting the seed
+set.seed(415)
+
+# Fitting a random forest
+fit <- randomForest(as.factor(Survived) ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked + Title + FamilySize + FamilyID2, data=train, importance=TRUE, ntree=2000)
+
+# Analysing the most important features of the random forest
+varImpPlot(fit)
+
+# Generating Kaggle prediction file
+Prediction <- predict(fit, test)
+submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
+write.csv(submit, file = "firstforest.csv", row.names = FALSE)
