@@ -1,6 +1,8 @@
 # Titanic: Machine Learning from Disaster
 # Following http://trevorstephens.com/post/72916401642/titanic-getting-started-with-r
 
+
+
 # Project set-up ----------------------------------------------------------
 
 # Setting working directory
@@ -22,6 +24,7 @@ test <- read.csv("Data/test.csv")
 train <- read.csv("Data/train.csv")
 
 
+
 # All passengers perish ---------------------------------------------------
 
 # Understanding the structure of the data
@@ -36,7 +39,7 @@ test$Survived <- rep(0, 418)
 
 # Create first submission file assuming all passengers perish (score = 0.6269)
 submit <- data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
-write.csv(submit, file = "Submissions/submission1.csv", row.names = FALSE)
+write.csv(submit, file = "Submissions/firstsubmission.csv", row.names = FALSE)
 
 
 # Gender-class model ------------------------------------------------------
@@ -53,7 +56,7 @@ test$Survived[test$Sex == 'female'] <- 1
 
 # Create submission where all females survive and all males perish (score = 0.7655)
 submit <- data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
-write.csv(submit, file = "Submissions/submission2.csv", row.names = FALSE)
+write.csv(submit, file = "Submissions/gender.csv", row.names = FALSE)
 
 # Looking and plotting at the age variable
 summary(train$Age)
@@ -82,7 +85,7 @@ test$Survived <- 0
 test$Survived[test$Sex == 'female'] <- 1
 test$Survived[test$Sex == 'female' & test$Pclass == 3 & test$Fare >= 20] <- 0
 submit <- data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
-write.csv(submit, file = "Submissions/submission3.csv", row.names = FALSE)
+write.csv(submit, file = "Submissions/genderclass.csv", row.names = FALSE)
 
 
 
@@ -116,14 +119,22 @@ fancyRpartPlot(fit)
 # Generating submission for Kaggle using this decision tree (score = 0.78469)
 Prediction <- predict(fit, test, type = "class")
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
-write.csv(submit, file = "submission4.csv", row.names = FALSE)
+write.csv(submit, file = "Submissions/decisiontree.csv", row.names = FALSE)
 
 
 
 # Feature Engineering -----------------------------------------------------
 
 # Reloading in data to start from blank slate
+genderclassmodel <- read.csv("Data\\genderclassmodel.csv", stringsAsFactors = FALSE)
+gendermodel <- read.csv("Data\\gendermodel.csv", stringsAsFactors = FALSE)
+test <- read.csv("Data\\test.csv")
+train <- read.csv("Data\\train.csv")
 
+genderclassmodel <- read.csv("Data/genderclassmodel.csv", stringsAsFactors = FALSE)
+gendermodel <- read.csv("Data/gendermodel.csv", stringsAsFactors = FALSE)
+test <- read.csv("Data/test.csv")
+train <- read.csv("Data/train.csv")
 
 # Creating a combined dataset with both training and test data
 test$Survived <- NA
@@ -173,7 +184,7 @@ fit <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked + T
 # Generating a prediction and submission file for Kaggle
 Prediction <- predict(fit, test, type = "class")
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
-write.csv(submit, file = "submission5.csv", row.names = FALSE)
+write.csv(submit, file = "Submissions/featureengineering.csv", row.names = FALSE)
 
 
 
@@ -214,7 +225,7 @@ varImpPlot(fit)
 # Generating Kaggle prediction file
 Prediction <- predict(fit, test)
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
-write.csv(submit, file = "firstforest.csv", row.names = FALSE)
+write.csv(submit, file = "Submissions/firstforest.csv", row.names = FALSE)
 
 # Installing and loading the party package
 # install.packages('party')
@@ -228,4 +239,4 @@ fit <- cforest(as.factor(Survived) ~ Pclass + Sex + Age + SibSp + Parch + Fare +
 # Generating a prediction
 Prediction <- predict(fit, test, OOB=TRUE, type = "response")
 submit <- data.frame(PassengerId = test$PassengerId, Survived = Prediction)
-write.csv(submit, file = "cforest.csv", row.names = FALSE)
+write.csv(submit, file = "Submissions/cforest.csv", row.names = FALSE)
